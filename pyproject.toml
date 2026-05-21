@@ -25,6 +25,8 @@ dependencies = [
     "tree-sitter-rust>=0.20.0",
     "pathspec>=0.12.1",
     "msgpack>=1.0.0",
+    # security: pinned transitive dep of sse-starlette
+    "starlette>=1.0.0,<2.0.0",
 ]
 
 [project.urls]

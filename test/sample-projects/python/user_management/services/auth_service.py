@@ -2,12 +2,11 @@
 Authentication service for user management system.
 """
 
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from datetime import datetime, timedelta
 import secrets
-import hashlib
 
-from ..models.user import User, UserStatus
+from ..models.user import User
 from ..utils.exceptions import AuthenticationError, UserNotFoundError
 
 
