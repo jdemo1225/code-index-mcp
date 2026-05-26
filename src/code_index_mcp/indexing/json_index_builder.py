@@ -9,14 +9,13 @@ import io
 import logging
 import os
 import time
-from collections import defaultdict
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple
 
 from .strategies import StrategyFactory
-from .models import SymbolInfo, FileInfo
+from .models import SymbolInfo
 
 logger = logging.getLogger(__name__)
 
