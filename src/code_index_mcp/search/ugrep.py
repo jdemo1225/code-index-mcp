@@ -5,7 +5,7 @@ import shutil
 import subprocess
 from typing import Dict, List, Optional, Tuple
 
-from .base import SearchStrategy, parse_search_output, create_word_boundary_pattern
+from .base import SearchStrategy, parse_search_output
 
 class UgrepStrategy(SearchStrategy):
     """Search strategy using the 'ugrep' (ug) command-line tool."""
