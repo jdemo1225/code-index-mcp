@@ -3,12 +3,11 @@ Command line interface for user management system.
 """
 
 import click
-import json
 from typing import Optional
 
 from .services.user_manager import UserManager
 from .services.auth_service import AuthService
-from .models.user import UserRole, UserStatus
+from .models.user import UserRole
 from .utils.exceptions import UserNotFoundError, DuplicateUserError
 
 
