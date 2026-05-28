@@ -6,7 +6,7 @@ It provides technical capabilities for finding files based on various patterns.
 """
 
 import fnmatch
-from typing import List, Set
+from typing import List
 from pathlib import Path
 
 # FileInfo defined locally for file matching operations
