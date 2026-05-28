@@ -1,12 +1,11 @@
 """Tests for environment variable configuration support (Issue #28)."""
 
 import asyncio
-import logging
 import os
 import unittest
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch
 
-from code_index_mcp.server import _CLI_CONFIG, _parse_args, indexer_lifespan, main, mcp
+from code_index_mcp.server import _CLI_CONFIG, indexer_lifespan, main, mcp
 
 
 class TestEnvVarProjectPath(unittest.TestCase):

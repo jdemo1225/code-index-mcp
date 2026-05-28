@@ -10,7 +10,6 @@ to domain-specific services for business logic.
 
 # Standard library imports
 import argparse
-import inspect
 import logging
 import os
 import signal
@@ -21,7 +20,7 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from functools import wraps
-from typing import Any, Dict, List, Optional
+from typing import Any
 from urllib.parse import unquote
 
 # Third-party imports
@@ -717,7 +716,7 @@ def main(argv: list[str] | None = None):
             starlette_app = mcp.streamable_http_app()
 
         # Add project context middleware for per-project manager isolation
-        starlette_app.add_middleware(ProjectContextMiddleware)
+        starlette_app = ProjectContextMiddleware(starlette_app)
         logger.info("Added ProjectContextMiddleware for per-project isolation")
 
         # Run with uvicorn
