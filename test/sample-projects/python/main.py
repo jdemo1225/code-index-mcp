@@ -3,7 +3,7 @@
 Main entry point for the user management system demo.
 """
 
-from user_management import UserManager, Person, User
+from user_management import UserManager
 from user_management.services.auth_service import AuthService
 from user_management.models.user import UserRole
 from user_management.utils.exceptions import UserNotFoundError, DuplicateUserError

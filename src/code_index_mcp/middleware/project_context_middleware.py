@@ -8,16 +8,15 @@ and sets the request context for per-project index manager isolation.
 from __future__ import annotations
 
 import logging
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.requests import Request
-from starlette.responses import Response
+from starlette.datastructures import Headers
+from starlette.types import ASGIApp, Receive, Scope, Send
 
 from ..request_context import reset_request_project_path, set_request_project_path
 
 logger = logging.getLogger(__name__)
 
 
-class ProjectContextMiddleware(BaseHTTPMiddleware):
+class ProjectContextMiddleware:
     """Middleware to extract and set project context from HTTP headers.
 
     The proxy sends the project path via the `Mcp-Project-Path` header,
@@ -25,22 +24,22 @@ class ProjectContextMiddleware(BaseHTTPMiddleware):
     the request is processed.
     """
 
-    async def dispatch(self, request: Request, call_next) -> Response:
-        # Extract project path from header (case-insensitive)
-        project_path = request.headers.get("mcp-project-path")
+    def __init__(self, app: ASGIApp) -> None:
+        self.app = app
 
-        if project_path:
-            logger.debug(f"[Middleware] Project path from header: {project_path}")
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] == "http":
+            headers = Headers(scope=scope)
+            project_path = headers.get("mcp-project-path")
 
-        token = set_request_project_path(project_path)
+            if project_path:
+                logger.debug("[Middleware] Project path from header: %s", project_path)
 
-        try:
-            # Set the context for this request
+            token = set_request_project_path(project_path)
 
-            # Process the request
-            response = await call_next(request)
-
-            return response
-        finally:
-            # Restore any previous context after request completes
-            reset_request_project_path(token)
+            try:
+                await self.app(scope, receive, send)
+            finally:
+                reset_request_project_path(token)
+        else:
+            await self.app(scope, receive, send)

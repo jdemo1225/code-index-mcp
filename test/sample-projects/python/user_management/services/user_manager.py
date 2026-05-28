@@ -2,12 +2,11 @@
 User management service for handling user operations.
 """
 
-from typing import List, Optional, Dict, Any, Callable
-from datetime import datetime
+from typing import List, Optional, Dict, Callable
 import json
 import os
 
-from ..models.user import User, UserRole, UserStatus
+from ..models.user import User, UserRole
 from ..utils.validators import validate_email, validate_username
 from ..utils.exceptions import UserNotFoundError, DuplicateUserError
 

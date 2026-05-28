@@ -5,7 +5,6 @@ This module provides consistent error handling across all MCP tools, resources, 
 """
 
 import functools
-import json
 from typing import Any, Callable
 
 
