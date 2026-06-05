@@ -4,8 +4,6 @@ Verify that additional_excludes parameter correctly filters directories
 during both shallow and deep indexing operations.
 """
 
-from pathlib import Path
-
 from code_index_mcp.indexing.sqlite_index_manager import SQLiteIndexManager
 from code_index_mcp.indexing.shallow_index_manager import ShallowIndexManager
 

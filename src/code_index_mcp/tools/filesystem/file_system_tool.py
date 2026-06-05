@@ -5,7 +5,7 @@ This tool handles low-level file system operations without any business logic.
 """
 
 import os
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 from pathlib import Path
 
 

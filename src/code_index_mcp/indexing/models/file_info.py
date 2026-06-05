@@ -3,7 +3,7 @@ FileInfo model for representing file metadata.
 """
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional
 
 
 @dataclass

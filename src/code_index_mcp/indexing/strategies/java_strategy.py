@@ -3,7 +3,7 @@ Java parsing strategy using tree-sitter - Optimized single-pass version.
 """
 
 import logging
-from typing import Dict, List, Tuple, Optional, Set
+from typing import Dict, List, Tuple, Optional
 from .base_strategy import ParsingStrategy
 from ..models import SymbolInfo, FileInfo
 

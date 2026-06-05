@@ -10,7 +10,6 @@ import os
 import re
 import tempfile
 import threading
-from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from .sqlite_index_builder import SQLiteIndexBuilder

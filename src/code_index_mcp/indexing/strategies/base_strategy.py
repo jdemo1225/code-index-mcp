@@ -4,7 +4,7 @@ Abstract base class for language parsing strategies.
 
 import os
 from abc import ABC, abstractmethod
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple
 from ..models import SymbolInfo, FileInfo
 
 

@@ -1,8 +1,6 @@
 """Tests for parallel deep indexing configuration and dynamic timeout."""
 
-import os
-import threading
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
 
