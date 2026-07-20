@@ -717,7 +717,7 @@ def main(argv: list[str] | None = None):
             starlette_app = mcp.streamable_http_app()
 
         # Add project context middleware for per-project manager isolation
-        starlette_app.add_middleware(ProjectContextMiddleware)
+        starlette_app = ProjectContextMiddleware(starlette_app)
         logger.info("Added ProjectContextMiddleware for per-project isolation")
 
         # Run with uvicorn

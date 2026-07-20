@@ -41,8 +41,10 @@ def test_set_request_project_path_reset_restores_outer_value():
 
 
 def _build_app(handler):
-    app = Starlette(routes=[Route("/", handler)])
-    app.add_middleware(ProjectContextMiddleware)
+    app = Starlette(
+        routes=[Route("/", handler)],
+    )
+    app = ProjectContextMiddleware(app)
     return app
 
 
