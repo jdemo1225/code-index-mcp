@@ -8,26 +8,41 @@ and sets the request context for per-project index manager isolation.
 from __future__ import annotations
 
 import logging
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.requests import Request
-from starlette.responses import Response
+
+from starlette.datastructures import Headers
+from starlette.types import ASGIApp, Receive, Scope, Send
 
 from ..request_context import reset_request_project_path, set_request_project_path
 
 logger = logging.getLogger(__name__)
 
+# Scopes that carry HTTP-style headers we care about.
+_HEADER_SCOPES = ("http", "websocket")
 
-class ProjectContextMiddleware(BaseHTTPMiddleware):
+
+class ProjectContextMiddleware:
     """Middleware to extract and set project context from HTTP headers.
 
     The proxy sends the project path via the `Mcp-Project-Path` header,
     allowing this middleware to set the request-scoped context before
     the request is processed.
+
+    This is implemented as a plain ASGI middleware (rather than using
+    Starlette's ``dispatch``-based HTTP middleware helper) so that the
+    contextvars set here are visible to the downstream application running in
+    the same task, and are restored as soon as the downstream call finishes.
     """
 
-    async def dispatch(self, request: Request, call_next) -> Response:
+    def __init__(self, app: ASGIApp) -> None:
+        self.app = app
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] not in _HEADER_SCOPES:
+            await self.app(scope, receive, send)
+            return
+
         # Extract project path from header (case-insensitive)
-        project_path = request.headers.get("mcp-project-path")
+        project_path = Headers(scope=scope).get("mcp-project-path")
 
         if project_path:
             logger.debug(f"[Middleware] Project path from header: {project_path}")
@@ -35,12 +50,8 @@ class ProjectContextMiddleware(BaseHTTPMiddleware):
         token = set_request_project_path(project_path)
 
         try:
-            # Set the context for this request
-
-            # Process the request
-            response = await call_next(request)
-
-            return response
+            # Process the request with the context set
+            await self.app(scope, receive, send)
         finally:
             # Restore any previous context after request completes
             reset_request_project_path(token)
